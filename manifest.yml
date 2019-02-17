@@ -1,7 +1,28 @@
 ---
+# manifest is the source of truth & will let converge the state of the system
+#
+# Workshop Cloud Expert - Déployer et gérer Pivotal Cloud Foundry dans le Cloud
+# maj: 18.fevrier.2019 - didier
+#
 applications:
 - name: spring-music
   memory: 1G
   random-route: true
   path: build/libs/spring-music-1.0.jar
-
+# online buildpack
+  buildpack: https://github.com/cloudfoundry/java-buildpack.git
+# setup according workshop instructions
+  services: [azure-postgresql-v9.6-TEAM1]
+#
+#  services: [redis-music-db]
+#  services: [sqldb-music-db]
+#  services: ....
+env:
+# detected by buildpack / pcf profile is over cloud, and infers cloud
+# ,,chaos-monkey
+#  SPRING_PROFILES_ACTIVE: cloud postgres redis sqlserver
+  SPRING_PROFILES_ACTIVE: postgres
+#
+  RELISE: spring-music_v0.22_12.fevrier.2019_dib
+#
+  JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
